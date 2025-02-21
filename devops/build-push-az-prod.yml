@@ -1,0 +1,10 @@
+pr: none
+trigger:
+  - main
+
+jobs:
+- template: core/node-build-push-az-template.yml
+  parameters:
+    projectName: 'har003_backend'
+    envName: 'production'
+    azureWebAppName: 'HAR003API-PROD'

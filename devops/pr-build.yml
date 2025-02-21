@@ -1,0 +1,7 @@
+pr: none
+trigger: none
+
+jobs:
+- template: core/node-build-template.yml
+  parameters:
+    projectName: 'har003_backend'

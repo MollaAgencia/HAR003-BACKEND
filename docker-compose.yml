@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  sqlserver:
+    container_name: plugin-database-sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "1q2w3e4r@#$"
+    ports:
+      - "1433:1433"

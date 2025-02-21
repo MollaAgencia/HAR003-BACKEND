@@ -1,0 +1,59 @@
+parameters:
+  - name: projectName # required
+    type: string
+    default: ''
+  - name: envName # required
+    type: string
+    default: ''
+  - name: azureWebAppName # required
+    type: string
+    default: ''
+
+jobs:
+- job: NodeApp_BuildAndDeploy
+  displayName: Build and Deploy ${{parameters.projectName}}
+  condition: succeeded()
+  variables:
+    BRANCH_NAME: $[replace(variables['Build.SourceBranch'], 'refs/heads/', '')]
+    SHORT_BRANCH_NAME: $[replace(variables['BRANCH_NAME'], '/', '_')]
+    APP_VERSION: $(SHORT_BRANCH_NAME)-$(Build.BuildId)
+  steps:
+
+  - checkout: self
+    fetchDepth: '1'
+
+  - task: Docker@2
+    displayName: 'Log in to Azure Container Registry'
+    inputs:
+      command: login
+      containerRegistry: 'Molla ACR'
+
+  - task: Docker@2
+    displayName: 'Docker Build'
+    inputs:
+      command: build
+      Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+      repository: '${{parameters.projectName}}'
+      containerRegistry: 'Molla ACR'
+      tags: |
+        $(APP_VERSION)
+      arguments: >-
+        --build-arg APP_ENV="${{parameters.envName}}"
+        --build-arg VERSION="$(APP_VERSION)"
+  
+  - task: Docker@2
+    displayName: 'Docker Push'
+    inputs:
+      command: push
+      Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+      repository: '${{parameters.projectName}}'
+      containerRegistry: 'Molla ACR'
+      tags: |
+        $(APP_VERSION)
+  
+  - task: AzureWebAppContainer@1
+    displayName: 'Deploy Azure Web App'
+    inputs:
+      azureSubscription: 'Microsoft Azure (mollaincentive): #1399289 (51013506-02e2-4bbe-ab57-1114582372bb)'
+      appName: '${{parameters.azureWebAppName}}'
+      imageName: 'mollaincentive.azurecr.io/${{parameters.projectName}}:$(APP_VERSION)'

@@ -1,0 +1,28 @@
+name: Gerar Nova Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_version:
+        description: 'Versão da tag (ex: v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fazer checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar usuário do Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Gerar nova tag
+        run: |
+          TAG_VERSION="${{ github.event.inputs.tag_version }}"
+          echo "Criando tag ${TAG_VERSION}"
+          git tag ${TAG_VERSION}
+          git push origin ${TAG_VERSION}

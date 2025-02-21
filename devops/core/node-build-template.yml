@@ -1,0 +1,24 @@
+parameters:
+  - name: projectName # required
+    type: string
+    default: ''
+
+jobs:
+- job: NextJs_Build
+  displayName: Build ${{parameters.projectName}}
+  condition: succeeded()
+  steps:
+
+  - checkout: self
+    fetchDepth: '1'
+
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '18.x'
+
+  - script: npm ci
+    displayName: 'Install Dependencies'
+
+  - script: npm run build
+    displayName: 'Build NextJs App'

@@ -1,0 +1,10 @@
+pr: none
+trigger:
+  - develop 
+
+jobs:
+- template: core/node-build-push-az-template.yml
+  parameters:
+    projectName: 'har003_backend'
+    envName: 'development'
+    azureWebAppName: 'HAR003API-HML'

@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Token {
+  id        String   @id @default(uuid())
+  type      String
+  userId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tokens")
+}
+
+model LogAccessPage {
+  id        String   @id @default(uuid())
+  page      String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, page, createdAt], name: "unique_log_access")
+  @@map("logs_access_pages")
+}
+
+model Mail {
+  id        String   @id @default(uuid())
+  status    String   @default("PENDING")
+  subject   String
+  email     String
+  body      String   @db.Text()
+  type      String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@map("mails")
+}
+
+model User {
+  id                     String          @id @default(uuid())
+  distributorId          String
+  distributor            Distributor     @relation(fields: [distributorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  name                   String
+  email                  String
+  document               String?         @unique
+  emailVerified          DateTime?
+  telephone              String?
+  role                   String
+  salesChannel           String?
+  region                 String?         @db.VarChar(12)
+  password               String?
+  disabled               DateTime?
+  mails                  Mail[]
+  tokens                 Token[]
+  logsAccessPages        LogAccessPage[]
+  awards                 Award[]
+  userPerformances       Performance[]   @relation("userPerformances")
+  managerPerformances    Performance[]   @relation("managerPerformances")
+  supervisorPerformances Performance[]   @relation("supervisorPerformances")
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+
+  @@unique([email, disabled], name: "unique_enabled_email")
+  @@unique([name, distributorId, disabled], name: "unique_name_distributor")
+  @@index([region])
+  @@map("users")
+}
+
+model Performance {
+  id             String      @id @default(uuid())
+  userId         String?
+  user           User?       @relation("userPerformances", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  supervisorId   String?
+  supervisor     User?       @relation("supervisorPerformances", fields: [supervisorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  managerId      String?
+  manager        User?       @relation("managerPerformances", fields: [managerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  externalUserId String?
+  distributorId  String
+  distributor    Distributor @relation(fields: [distributorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  userRole       String
+  salesChannel   String?
+  goal           Float       @default(0)
+  real           Float       @default(0)
+  period         Int
+  kpiType        String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@unique([distributorId, externalUserId, userId, kpiType, period], name: "unique_external_user")
+  @@unique([distributorId, userId, kpiType, period], name: "unique_user")
+  @@map("performances")
+}
+
+model Award {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  description     String?
+  period          Int
+  referencePeriod String
+  type            String
+  status          String
+  goal            Float
+  reason          String
+  disabled        DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("awards")
+}
+
+model Distributor {
+  id           String        @id @default(uuid())
+  name         String
+  externalId   String        @unique
+  disabled     DateTime?
+  performances Performance[]
+  users        User[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("distributors")
+}
