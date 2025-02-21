@@ -46,7 +46,7 @@ export class AuthorizationUseCase {
 
     const masterPasswordHomology = 'Molla@2024'
 
-    if (this.envService.get('FROM') === 'DEV' && password === masterPasswordHomology) {
+    if (this.envService.get('NODE_ENV') === 'development' && password === masterPasswordHomology) {
       const accessToken = await this.encrypter.encrypt({
         payload: {
           sub: user.id.toValue(),

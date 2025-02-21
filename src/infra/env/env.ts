@@ -4,7 +4,6 @@ export const envSchema = z.object({
   SERVICE: z.string(),
   VERSION: z.string().default('1.0.0'),
   PORT: z.string().default('3333'),
-  FROM: z.enum(['DEV', 'PRD']),
 
   DATABASE_URL: z.string().min(1),
 
@@ -24,6 +23,8 @@ export const envSchema = z.object({
 
   //   App
   APP_URL_DASHBOARD: z.string().min(1),
+
+  NODE_ENV: z.string().min(1).default('production'),
 })
 
 export type Env = z.infer<typeof envSchema>
