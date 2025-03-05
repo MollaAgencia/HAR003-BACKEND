@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common'
 import { AwardUseCaseModule } from '@root/domain/award/applications/use-cases/award-use-case.module'
 import { DistributorUseCaseModule } from '@root/domain/distributor/applications/use-cases/distributor-use-cases.module'
 import { PerformanceUseCaseModule } from '@root/domain/performance/applications/use-cases/performance-use-case.module'
+import { HealthzController } from '@root/presentations/healthz/healthz.controller'
+import { PrometheusModule } from '@willsoto/nestjs-prometheus'
 
 import { AuthorizationUseCasesModule } from '@domain/authorization/applications/use-cases/authorization-use-cases.module'
 import { LogAccessUseCasesModule } from '@domain/log-access/applications/use-cases/log-access-use-cases.module'
@@ -26,10 +28,9 @@ import { FindDistributorsController } from './controllers/distributor/find-distr
 import { AcceleratorPerformanceController } from './controllers/performance/accelerator.controller'
 import { BimonthlyPerformanceController } from './controllers/performance/bimonthly.controller'
 import { FindPerformanceGroupController } from './controllers/performance/find-group.controller'
+import { TeamEngagementController } from './controllers/performance/team-engagement.controller'
 import { RegisterLogAccessController } from './controllers/register-log-access.controller'
 import { SacController } from './controllers/sac.controller'
-import { HealthzController } from '@root/presentations/healthz/healthz.controller'
-import { PrometheusModule } from '@willsoto/nestjs-prometheus'
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus'
     CreateUserController,
     UpdateUserController,
     ToggleUserStatusController,
+    TeamEngagementController,
   ],
 })
 export class PresentationsModule {}

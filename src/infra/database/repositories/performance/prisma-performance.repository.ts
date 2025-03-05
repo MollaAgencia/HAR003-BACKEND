@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { UniqueEntityID } from '@root/core/domain/unique-entity-id'
 import { SalesChannel, UserRole } from '@root/domain/authorization/enterprise/interfaces/user'
 import {
   GetPerformanceProps,
@@ -13,6 +14,8 @@ import {
   SemiannualPerformanceDetails,
   BimonthlyDetailsProps,
 } from '@root/domain/performance/enterprise/value-objects/semiannual-performance-details'
+import { SimpleUserDetails } from '@root/domain/performance/enterprise/value-objects/simple-user-details'
+import { TeamEngagementDetails } from '@root/domain/performance/enterprise/value-objects/team-engagement-details'
 import { monthPeriodByBimonthlyPeriod } from '@root/shared/months-by-bimonthly-period'
 import { bimonthlyPeriodBySemiannualPeriod } from '@root/shared/months-by-semiannual-period'
 
@@ -158,5 +161,55 @@ export class PrismaPerformanceRepository implements PerformanceRepository {
       bimonthlySellOutPerformances: bimonthlySellOutPerformances,
       teamEngagement: [],
     })
+  }
+
+  async getTeamEngagement(data: GetPerformanceProps): Promise<Array<TeamEngagementDetails>> {
+    const { userId, period } = data
+
+    const users = await this.db.performance.groupBy({
+      by: ['userId'],
+      where: {
+        period: period,
+        OR: [{ supervisorId: userId.toValue() }, { managerId: userId.toValue() }],
+      },
+    })
+    const results = await Promise.all(
+      users.map(async (user) => {
+        const userPerformances = await this.db.performance.findMany({
+          where: { userId: user.userId, period: period },
+          include: {
+            user: true,
+          },
+        })
+
+        const teamSizeSupervisor = await this.db.performance.count({
+          where: {
+            period: period,
+            supervisorId: user.userId,
+          },
+        })
+
+        const teamSizeManager = await this.db.performance.count({
+          where: {
+            period: period,
+            managerId: user.userId,
+          },
+        })
+
+        const userData = userPerformances[0]?.user
+
+        return TeamEngagementDetails.create({
+          performances: userPerformances.map((performance) => PerformanceMappers.toDetails(performance)),
+          teamSize: teamSizeManager + teamSizeSupervisor,
+          user: SimpleUserDetails.create({
+            id: new UniqueEntityID(user.userId),
+            role: (userData?.role as UserRole) || null,
+            name: userData?.name || 'Unknown',
+          }),
+        })
+      }),
+    )
+
+    return results
   }
 }

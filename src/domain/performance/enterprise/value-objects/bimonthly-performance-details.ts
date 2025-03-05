@@ -1,6 +1,7 @@
 import { ValueObject } from '@root/core/domain/value-object'
 import { salesChannel, SalesChannel, userRole, UserRole } from '@root/domain/authorization/enterprise/interfaces/user'
 import { mapGroup } from '@root/shared/map-group'
+import { getKpiCoverage, getTotalGoalByKpi, getTotalRealByKpi } from '@root/shared/performance-utils'
 
 import { KpiStatus, kpiStatus } from '../entities/performance.entity'
 import { PerformanceDetails } from './performance-details'
@@ -179,48 +180,22 @@ export class BimonthlyPerformanceDetails extends ValueObject<BimonthlyPerformanc
   }
 
   private isSellOutHit(): boolean {
-    return this.getKpiCoverage(kpiType.SELL_OUT) >= 1 ? true : false
+    return getKpiCoverage(kpiType.SELL_OUT, this.performances) >= 1 ? true : false
   }
 
   private isPositivationHit(): boolean {
-    return this.getKpiCoverage(kpiType.POSITIVATION) >= 1 ? true : false
+    return getKpiCoverage(kpiType.POSITIVATION, this.performances) >= 1 ? true : false
   }
 
   private isUrsinhosHit(): boolean {
-    return this.getKpiCoverage(kpiType.URSINHOS) >= 1 ? true : false
+    return getKpiCoverage(kpiType.URSINHOS, this.performances) >= 1 ? true : false
   }
 
   private sellOutReal(): number {
-    return this.getTotalRealByKpi(kpiType.SELL_OUT)
+    return getTotalRealByKpi(kpiType.SELL_OUT, this.performances)
   }
 
   private positivationGoal(): number {
-    return this.getTotalGoalByKpi(kpiType.POSITIVATION)
-  }
-
-  private getTotalGoalByKpi(kpiType: KpiType): number {
-    return this.performances
-      .filter((performance) => performance.kpiType === kpiType)
-      .reduce((sum, performance) => sum + performance.goal, 0)
-  }
-
-  private getTotalRealByKpi(kpiType: KpiType): number {
-    return this.performances
-      .filter((performance) => performance.kpiType === kpiType)
-      .reduce((sum, performance) => sum + performance.real, 0)
-  }
-
-  private getKpiCoverage(kpiType: KpiType): number {
-    const goal = this.performances
-      .filter((performance) => performance.kpiType === kpiType)
-      .reduce((sum, performance) => sum + performance.goal, 0)
-
-    const real = this.performances
-      .filter((performance) => performance.kpiType === kpiType)
-      .reduce((sum, performance) => sum + performance.real, 0)
-
-    if (goal === 0) return real > 0 ? 100 : 0
-    if (real === 0 && goal === 0) return 0
-    return real / goal
+    return getTotalGoalByKpi(kpiType.POSITIVATION, this.performances)
   }
 }

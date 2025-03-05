@@ -7,6 +7,7 @@ import { GetAcceleratorPerformanceUseCase } from './accelerator.use-case'
 import { GetBimonthlyPerformanceUseCase } from './bimonthly-performance.use-case'
 import { GetPerformanceGroupUseCase } from './get-group.use-case'
 import { GetSemiannuallyPerformanceUseCase } from './semiannual-performance.use-case'
+import { GetTeamEngagementUseCase } from './team-engagement.use-case'
 
 @Module({
   imports: [DatabaseModule, EnvModule, MailUseCaseModule],
@@ -15,12 +16,14 @@ import { GetSemiannuallyPerformanceUseCase } from './semiannual-performance.use-
     GetAcceleratorPerformanceUseCase,
     GetBimonthlyPerformanceUseCase,
     GetPerformanceGroupUseCase,
+    GetTeamEngagementUseCase,
   ],
   exports: [
     GetSemiannuallyPerformanceUseCase,
     GetAcceleratorPerformanceUseCase,
     GetBimonthlyPerformanceUseCase,
     GetPerformanceGroupUseCase,
+    GetTeamEngagementUseCase,
   ],
 })
 export class PerformanceUseCaseModule {}
