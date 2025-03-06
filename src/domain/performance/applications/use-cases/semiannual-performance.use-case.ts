@@ -19,7 +19,7 @@ type InputProps = {
 type OutputProps = Either<ResourceNotFoundError, SemiannualPerformanceDetails>
 
 @Injectable()
-export class GetSemiannuallyPerformanceUseCase {
+export class GetSemiannualPerformanceUseCase {
   constructor(
     private readonly userRepository: UsersRepository,
     private readonly performanceRepository: PerformanceRepository,

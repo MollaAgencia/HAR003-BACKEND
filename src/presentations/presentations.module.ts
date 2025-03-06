@@ -28,6 +28,7 @@ import { FindDistributorsController } from './controllers/distributor/find-distr
 import { AcceleratorPerformanceController } from './controllers/performance/accelerator.controller'
 import { BimonthlyPerformanceController } from './controllers/performance/bimonthly.controller'
 import { FindPerformanceGroupController } from './controllers/performance/find-group.controller'
+import { SemiannualPerformanceController } from './controllers/performance/semiannual.controller'
 import { TeamEngagementController } from './controllers/performance/team-engagement.controller'
 import { RegisterLogAccessController } from './controllers/register-log-access.controller'
 import { SacController } from './controllers/sac.controller'
@@ -66,6 +67,7 @@ import { SacController } from './controllers/sac.controller'
     UpdateUserController,
     ToggleUserStatusController,
     TeamEngagementController,
+    SemiannualPerformanceController,
   ],
 })
 export class PresentationsModule {}

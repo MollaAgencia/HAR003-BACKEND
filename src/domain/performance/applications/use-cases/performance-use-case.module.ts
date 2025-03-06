@@ -6,20 +6,20 @@ import { EnvModule } from '@root/infra/env/env.module'
 import { GetAcceleratorPerformanceUseCase } from './accelerator.use-case'
 import { GetBimonthlyPerformanceUseCase } from './bimonthly-performance.use-case'
 import { GetPerformanceGroupUseCase } from './get-group.use-case'
-import { GetSemiannuallyPerformanceUseCase } from './semiannual-performance.use-case'
+import { GetSemiannualPerformanceUseCase } from './semiannual-performance.use-case'
 import { GetTeamEngagementUseCase } from './team-engagement.use-case'
 
 @Module({
   imports: [DatabaseModule, EnvModule, MailUseCaseModule],
   providers: [
-    GetSemiannuallyPerformanceUseCase,
+    GetSemiannualPerformanceUseCase,
     GetAcceleratorPerformanceUseCase,
     GetBimonthlyPerformanceUseCase,
     GetPerformanceGroupUseCase,
     GetTeamEngagementUseCase,
   ],
   exports: [
-    GetSemiannuallyPerformanceUseCase,
+    GetSemiannualPerformanceUseCase,
     GetAcceleratorPerformanceUseCase,
     GetBimonthlyPerformanceUseCase,
     GetPerformanceGroupUseCase,
