@@ -177,7 +177,10 @@ export class PrismaPerformanceRepository implements PerformanceRepository {
     const results = await Promise.all(
       users.map(async (user) => {
         const userPerformances = await this.db.performance.findMany({
-          where: { userId: user.userId, period: { in: period } },
+          where: {
+            userId: user.userId,
+            period: { in: period },
+          },
           include: {
             user: true,
           },

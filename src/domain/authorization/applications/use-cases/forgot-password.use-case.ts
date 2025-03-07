@@ -39,7 +39,6 @@ export class ForgotPasswordUseCase {
     if (passwordResetTokenAlreadySent) {
       await this.tokensRepository.delete(passwordResetTokenAlreadySent)
     }
-    console.log(email)
 
     const passwordResetToken = Token.create({ userId: user.id, type: 'PASSWORD_RESET' })
 
