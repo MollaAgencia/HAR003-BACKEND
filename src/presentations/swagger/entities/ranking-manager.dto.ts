@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { IsCuid2 } from '@root/shared/is-cuid2'
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 
 export enum RankingStatus {
@@ -7,6 +8,20 @@ export enum RankingStatus {
   WINNER = 'WINNER',
 }
 export class RankingManagerDto {
+  @ApiProperty({
+    description: 'Unique identifier of the ranking',
+    example: 'tz4a98xxat96iws9zmbrgj3a',
+  })
+  @IsCuid2()
+  id: string
+
+  @ApiProperty({
+    description: 'Unique identifier of the user',
+    example: 'tz4a98xxat96iws9zmbrgj3a',
+  })
+  @IsCuid2()
+  userId: string
+
   @ApiProperty({
     description: 'User name with the ranking',
     example: 'Vitor',

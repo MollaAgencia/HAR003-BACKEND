@@ -5,8 +5,6 @@ import { RankingsManagerDetails } from '../../enterprise/value-objects/ranking-m
 
 export type FindCurrentRankingProps = {
   userId: UniqueEntityID
-  period: number
-  region?: string | null
 }
 
 export type FindManyProps = {

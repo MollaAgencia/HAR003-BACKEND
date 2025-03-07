@@ -3,6 +3,11 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { GetManagerRankingsUseCase } from '@root/domain/ranking/applications/use-cases/get-manager-rankings.use-case'
 import { CurrentUser } from '@root/presentations/auth/current-user-decorator'
 import { UserPayload } from '@root/presentations/auth/jwt.strategy'
+import {
+  GetRankingsQueryDto,
+  SwaggerGetRankingsManagerDto,
+} from '@root/presentations/swagger/find-rankings-manager.dto'
+import { RankingManagerDetailsViewModel } from '@root/presentations/view-model/ranking-distributor-details.view-model'
 
 import { UniqueEntityID } from '@core/domain/unique-entity-id'
 import { ResourceNotFoundError } from '@core/errors/errors/resource-not-found-error'
@@ -19,7 +24,6 @@ export class FindRankingsManagerController {
   async handle(@CurrentUser() user: UserPayload, @Query() query: GetRankingsQueryDto) {
     const { period } = query
     const { embed } = user
-
     const result = await this.getRankingsManager.execute({
       userId: new UniqueEntityID(embed),
       period,
@@ -40,6 +44,6 @@ export class FindRankingsManagerController {
       }
     }
 
-    return result.value.map(RankingDetailsViewModel.toHttp)
+    return { rankings: result.value.map(RankingManagerDetailsViewModel.toHttp) }
   }
 }

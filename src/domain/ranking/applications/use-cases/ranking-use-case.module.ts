@@ -11,4 +11,4 @@ import { GetManagerRankingsUseCase } from './get-manager-rankings.use-case'
   providers: [GetCurrentManagerRankingUseCase, GetManagerRankingsUseCase],
   exports: [GetCurrentManagerRankingUseCase, GetManagerRankingsUseCase],
 })
-export class RankingModuleUseCasesModule {}
+export class ManagerRankingUseCasesModule {}

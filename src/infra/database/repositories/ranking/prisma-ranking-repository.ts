@@ -7,6 +7,7 @@ import {
 import { RankingManager } from '@root/domain/ranking/enterprise/entities/ranking-manager.entity'
 import { RankingStatus } from '@root/domain/ranking/enterprise/interfaces/ranking-manager'
 import { RankingsManagerDetails } from '@root/domain/ranking/enterprise/value-objects/ranking-manager-details'
+import { currentFiscalSemester } from '@root/shared/current-semester'
 
 import { UniqueEntityID } from '@core/domain/unique-entity-id'
 
@@ -18,12 +19,12 @@ export class PrismaManagerRankingRepository implements ManagerRankingRepository 
   constructor(private readonly db: PrismaService) {}
 
   async findCurrentRanking(data: FindCurrentRankingProps): Promise<RankingManager> {
-    const { userId, period } = data
+    const { userId } = data
 
     const managerRanking = await this.db.managerRanking.findFirst({
       where: {
         userId: userId.toValue(),
-        period,
+        period: currentFiscalSemester(),
       },
       include: {
         user: {
@@ -51,6 +52,7 @@ export class PrismaManagerRankingRepository implements ManagerRankingRepository 
         user: {
           select: {
             name: true,
+            id: true,
           },
         },
       },
@@ -62,6 +64,7 @@ export class PrismaManagerRankingRepository implements ManagerRankingRepository 
     return managerRankings.map((ranking) =>
       RankingsManagerDetails.create({
         id: new UniqueEntityID(ranking.id),
+        userId: new UniqueEntityID(ranking.user.id),
         userName: ranking.user.name,
         status: ranking.status as RankingStatus,
         score: ranking.score,

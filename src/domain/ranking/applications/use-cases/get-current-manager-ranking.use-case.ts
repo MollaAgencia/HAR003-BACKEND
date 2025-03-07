@@ -11,7 +11,6 @@ import { RankingManager } from '../../enterprise/entities/ranking-manager.entity
 
 type InputProps = {
   userId: UniqueEntityID
-  period: number
 }
 
 type OutputProps = Either<ResourceNotFoundError, RankingManager>
@@ -24,14 +23,13 @@ export class GetCurrentManagerRankingUseCase {
   ) {}
 
   async execute(data: InputProps): Promise<OutputProps> {
-    const { userId, period } = data
+    const { userId } = data
 
     const user = await this.userRepository.findById(userId)
     if (!user) return left(new ResourceNotFoundError())
 
     const ranking = await this.managerRankingRepository.findCurrentRanking({
       userId: userId,
-      period,
     })
 
     if (!ranking) return left(new ResourceNotFoundError())

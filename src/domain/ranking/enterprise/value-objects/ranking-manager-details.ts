@@ -5,6 +5,7 @@ import { RankingStatus } from '../interfaces/ranking-manager'
 
 type RankingsManagerDetailsProps = {
   userName: string
+  userId: UniqueEntityID
   position: number
   score: number
   id: UniqueEntityID
@@ -19,6 +20,9 @@ export class RankingsManagerDetails extends ValueObject<RankingsManagerDetailsPr
 
   get id() {
     return this.props.id
+  }
+  get userId() {
+    return this.props.userId
   }
 
   get position() {
@@ -40,6 +44,7 @@ export class RankingsManagerDetails extends ValueObject<RankingsManagerDetailsPr
   static create(props: RankingsManagerDetailsProps) {
     return new RankingsManagerDetails({
       id: props.id,
+      userId: props.userId,
       userName: props.userName,
       position: props.position,
       score: props.score,

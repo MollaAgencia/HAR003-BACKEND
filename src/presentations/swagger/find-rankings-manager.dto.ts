@@ -4,10 +4,18 @@ import { RankingManagerDto } from './entities/ranking-manager.dto'
 import { SwaggerResourceNotFoundDto, SwaggerUnauthorizedDto } from './swagger.dto'
 
 export class GetRankingsQueryDto extends PickType(RankingManagerDto, ['period']) {}
+export class GetRankingsResponseDto extends PickType(RankingManagerDto, [
+  'id',
+  'userId',
+  'userName',
+  'position',
+  'status',
+  'score',
+]) {}
 
 class GetRankingsManagerResponseDto {
-  @ApiProperty({ type: [RankingManagerDto], description: 'Rankings information' })
-  rankings: RankingManagerDto[]
+  @ApiProperty({ type: [GetRankingsResponseDto], description: 'Rankings information' })
+  rankings: GetRankingsResponseDto[]
 }
 
 export const SwaggerGetRankingsManagerDto = () => {
