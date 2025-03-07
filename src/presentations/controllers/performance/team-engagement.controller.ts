@@ -5,7 +5,7 @@ import { CurrentUser } from '@root/presentations/auth/current-user-decorator'
 import { UserPayload } from '@root/presentations/auth/jwt.strategy'
 import {
   FindTeamEngagement,
-  FindTeamEngagementParamsSwaggerDto,
+  FindTeamEngagementQuerySwaggerDto,
 } from '@root/presentations/swagger/find-team-engagement-details.dto'
 import { TeamEngagementViewModel } from '@root/presentations/view-model/team-engagement.view-model'
 
@@ -21,9 +21,21 @@ export class TeamEngagementController {
   @Get('/team-engagement')
   @HttpCode(200)
   @FindTeamEngagement()
-  async handle(@CurrentUser() user: UserPayload, @Query() query: FindTeamEngagementParamsSwaggerDto) {
+  async handle(@CurrentUser() user: UserPayload, @Query() query: FindTeamEngagementQuerySwaggerDto) {
     const { embed } = user
-    const { period, userId } = query
+    const { userId, referenceType } = query
+    let period = [query.period]
+
+    if (referenceType === 'BIMONTHLY') {
+      const availableMonths: Record<number, Array<number>> = {
+        1: [1, 2],
+        2: [3, 4],
+        3: [5, 6],
+        4: [7, 8],
+      }
+
+      period = availableMonths[period[0]]
+    }
 
     const result = await this.teamEngagement.execute({
       userId: userId ? new UniqueEntityID(userId) : null,

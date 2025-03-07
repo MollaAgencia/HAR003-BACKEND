@@ -1,18 +1,29 @@
 import { ApiProperty, ApiResponse, PickType } from '@nestjs/swagger'
-import { ArrayNotEmpty, IsArray, IsNumber, IsOptional, IsString } from 'class-validator'
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 
 import { UserDto } from './entities/user.dto'
 
-export class FindTeamEngagementParamsSwaggerDto {
+enum FindTeamEngagementReferenceType {
+  MONTHLY = 'MONTHLY',
+  BIMONTHLY = 'BIMONTHLY',
+}
+
+export class FindTeamEngagementQuerySwaggerDto {
   @ApiProperty({
     description: 'Periods of the performance',
-    example: [1, 2, 3],
-    type: [Number],
+    example: 1,
+    type: Number,
   })
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsNumber({}, { each: true })
-  period: number[]
+  @IsNumber()
+  period: number
+
+  @ApiProperty({
+    description: 'Reference type of the performance',
+    example: 'MONTHLY',
+    enum: FindTeamEngagementReferenceType,
+  })
+  @IsEnum(FindTeamEngagementReferenceType)
+  referenceType: FindTeamEngagementReferenceType
 
   @ApiProperty({
     description: 'user of the team engagement',
@@ -29,7 +40,7 @@ export const FindTeamEngagement = () => {
     ApiResponse({
       status: 200,
       description: 'User found',
-      type: FindTeamEngagementResponseSwaggerDto,
+      type: [FindTeamEngagementResponseSwaggerDto],
     })(target, key, descriptor)
 
     ApiResponse({ status: 400, description: 'Bad request', type: FindTeamEngagementBadRequestSwaggerDto })(
