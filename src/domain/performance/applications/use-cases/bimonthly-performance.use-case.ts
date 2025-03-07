@@ -7,6 +7,7 @@ import { Either, left, right } from '@core/logic/Either'
 
 import { UsersRepository } from '@domain/authorization/applications/repositories/users.repository'
 
+import { kpiType } from '../../enterprise/entities/performance.entity'
 import { BimonthlyPerformanceDetails } from '../../enterprise/value-objects/bimonthly-performance-details'
 
 type InputProps = {
@@ -33,6 +34,10 @@ export class GetBimonthlyPerformanceUseCase {
       userId: user.id,
       period: period,
     })
+
+    const order = [kpiType.SELL_OUT, kpiType.POSITIVATION, kpiType.URSINHOS, kpiType.ACCELERATOR]
+
+    performanceDetails.performances.sort((a, b) => order.indexOf(a.kpiType) - order.indexOf(b.kpiType))
     return right(performanceDetails)
   }
 }

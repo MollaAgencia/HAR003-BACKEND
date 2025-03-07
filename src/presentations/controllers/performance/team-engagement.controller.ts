@@ -8,6 +8,7 @@ import {
   FindTeamEngagementQuerySwaggerDto,
 } from '@root/presentations/swagger/find-team-engagement-details.dto'
 import { TeamEngagementViewModel } from '@root/presentations/view-model/team-engagement.view-model'
+import { monthPeriodByBimonthlyPeriod } from '@root/shared/months-by-bimonthly-period'
 
 import { UniqueEntityID } from '@core/domain/unique-entity-id'
 import { ResourceNotFoundError } from '@core/errors/errors/resource-not-found-error'
@@ -27,14 +28,7 @@ export class TeamEngagementController {
     let period = [query.period]
 
     if (referenceType === 'BIMONTHLY') {
-      const availableMonths: Record<number, Array<number>> = {
-        1: [1, 2],
-        2: [3, 4],
-        3: [5, 6],
-        4: [7, 8],
-      }
-
-      period = availableMonths[period[0]]
+      period = monthPeriodByBimonthlyPeriod(period[0])
     }
 
     const result = await this.teamEngagement.execute({

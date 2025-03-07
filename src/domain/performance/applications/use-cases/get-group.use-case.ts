@@ -36,12 +36,7 @@ export class GetPerformanceGroupUseCase {
     })
 
     if (!bimonthlyGoal) return left(new ResourceNotFoundError())
-    console.log(
-      mapGroup({
-        value: bimonthlyGoal.goal,
-        sallesChannel: bimonthlyGoal.salesChannel,
-      }),
-    )
+
     return right(
       mapGroup({
         value: bimonthlyGoal.goal,
