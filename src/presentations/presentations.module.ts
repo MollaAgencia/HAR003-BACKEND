@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { AwardUseCaseModule } from '@root/domain/award/applications/use-cases/award-use-case.module'
 import { DistributorUseCaseModule } from '@root/domain/distributor/applications/use-cases/distributor-use-cases.module'
 import { PerformanceUseCaseModule } from '@root/domain/performance/applications/use-cases/performance-use-case.module'
+import { ManagerRankingUseCasesModule } from '@root/domain/ranking/applications/use-cases/ranking-use-case.module'
 import { HealthzController } from '@root/presentations/healthz/healthz.controller'
 import { PrometheusModule } from '@willsoto/nestjs-prometheus'
 
@@ -28,7 +29,10 @@ import { FindDistributorsController } from './controllers/distributor/find-distr
 import { AcceleratorPerformanceController } from './controllers/performance/accelerator.controller'
 import { BimonthlyPerformanceController } from './controllers/performance/bimonthly.controller'
 import { FindPerformanceGroupController } from './controllers/performance/find-group.controller'
+import { SemiannualPerformanceController } from './controllers/performance/semiannual.controller'
 import { TeamEngagementController } from './controllers/performance/team-engagement.controller'
+import { FindCurrentRankingManagerController } from './controllers/ranking/find-current-manager-ranking.controller'
+import { FindRankingsManagerController } from './controllers/ranking/find-managers-rankings.controller'
 import { RegisterLogAccessController } from './controllers/register-log-access.controller'
 import { SacController } from './controllers/sac.controller'
 
@@ -40,6 +44,7 @@ import { SacController } from './controllers/sac.controller'
     PerformanceUseCaseModule,
     AwardUseCaseModule,
     DistributorUseCaseModule,
+    ManagerRankingUseCasesModule,
     PrometheusModule.register(),
   ],
   controllers: [
@@ -66,6 +71,9 @@ import { SacController } from './controllers/sac.controller'
     UpdateUserController,
     ToggleUserStatusController,
     TeamEngagementController,
+    SemiannualPerformanceController,
+    FindCurrentRankingManagerController,
+    FindRankingsManagerController,
   ],
 })
 export class PresentationsModule {}

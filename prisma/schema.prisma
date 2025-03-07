@@ -72,6 +72,7 @@ model User {
   @@unique([name, distributorId, disabled], name: "unique_name_distributor")
   @@index([region])
   @@map("users")
+  ManagerRanking ManagerRanking[]
 }
 
 model Performance {
@@ -115,6 +116,21 @@ model Award {
   updatedAt       DateTime  @updatedAt
 
   @@map("awards")
+}
+
+model ManagerRanking {
+  id            String   @id @default(uuid())
+  userId String
+  period        Int
+  position      Int
+  score         Float
+  status        String   @default("LOSER")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  region        String?         @db.VarChar(12)
+  user User @relation(fields: [userId], references: [id])
+  @@unique([userId, period], name: "unique_ranking_manager")
+  @@map("manager_rankings")
 }
 
 model Distributor {

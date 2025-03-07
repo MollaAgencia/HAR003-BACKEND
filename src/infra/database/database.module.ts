@@ -4,6 +4,7 @@ import { AwardRepository } from '@root/domain/award/applications/repositories/aw
 import { DistributorRepository } from '@root/domain/distributor/applications/repositories/distributor.repository'
 import { LogAccessRepository } from '@root/domain/log-access/applications/repositories/log-access.repository'
 import { PerformanceRepository } from '@root/domain/performance/applications/repositories/performance.repositories'
+import { ManagerRankingRepository } from '@root/domain/ranking/applications/repositories/manager-ranking.repositories'
 
 import { TokensRepository } from '@domain/authorization/applications/repositories/tokens.repository'
 import { MailRepository } from '@domain/mailer/applications/repositories/mail.repository'
@@ -18,6 +19,7 @@ import { PrismaDistributorRepository } from './repositories/distributor/prisma-d
 import { PrismaPerformanceRepository } from './repositories/performance/prisma-performance.repository'
 import { PrismaTokensRepository } from './repositories/prisma-tokens.repository'
 import { PrismaUsersRepository } from './repositories/prisma-users.repository'
+import { PrismaManagerRankingRepository } from './repositories/ranking/prisma-ranking-repository'
 
 @Module({
   imports: [EnvModule],
@@ -30,6 +32,7 @@ import { PrismaUsersRepository } from './repositories/prisma-users.repository'
     { provide: PerformanceRepository, useClass: PrismaPerformanceRepository },
     { provide: AwardRepository, useClass: PrismaAwardRepository },
     { provide: DistributorRepository, useClass: PrismaDistributorRepository },
+    { provide: ManagerRankingRepository, useClass: PrismaManagerRankingRepository },
   ],
   exports: [
     PrismaService,
@@ -40,6 +43,7 @@ import { PrismaUsersRepository } from './repositories/prisma-users.repository'
     PerformanceRepository,
     AwardRepository,
     DistributorRepository,
+    ManagerRankingRepository,
   ],
 })
 export class DatabaseModule {}

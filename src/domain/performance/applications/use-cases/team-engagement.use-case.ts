@@ -12,7 +12,7 @@ import { TeamEngagementDetails } from '../../enterprise/value-objects/team-engag
 type InputProps = {
   embedUserId: UniqueEntityID
   userId?: UniqueEntityID
-  period: number
+  period: number[]
 }
 
 type OutputProps = Either<ResourceNotFoundError, Array<TeamEngagementDetails>>

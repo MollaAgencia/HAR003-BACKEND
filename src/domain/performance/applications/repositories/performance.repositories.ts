@@ -12,6 +12,11 @@ export type GetPerformanceProps = {
   period: number
 }
 
+export type GetTeamPerformanceProps = {
+  userId: UniqueEntityID
+  period: number[]
+}
+
 export type GetSemiannuallyPerformanceProps = {
   userId: UniqueEntityID
   period: number
@@ -22,5 +27,5 @@ export abstract class PerformanceRepository {
   abstract getBimonthlyPerformance(data: GetPerformanceProps): Promise<BimonthlyPerformanceDetails>
   abstract getBimonthlySellOutGoal(data: GetPerformanceProps): Promise<{ goal: number; salesChannel: SalesChannel }>
   abstract getManagerSemiannualPerformance(data: GetSemiannuallyPerformanceProps): Promise<SemiannualPerformanceDetails>
-  abstract getTeamEngagement(data: GetPerformanceProps): Promise<Array<TeamEngagementDetails>>
+  abstract getTeamEngagement(data: GetTeamPerformanceProps): Promise<Array<TeamEngagementDetails>>
 }

@@ -1,15 +1,18 @@
 import { ApiProperty, ApiResponse, PickType } from '@nestjs/swagger'
-import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { ArrayNotEmpty, IsArray, IsNumber, IsOptional, IsString } from 'class-validator'
 
 import { UserDto } from './entities/user.dto'
 
 export class FindTeamEngagementParamsSwaggerDto {
   @ApiProperty({
-    description: 'period of the performance',
-    example: 1,
+    description: 'Periods of the performance',
+    example: [1, 2, 3],
+    type: [Number],
   })
-  @IsNumber()
-  period: number
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  period: number[]
 
   @ApiProperty({
     description: 'user of the team engagement',

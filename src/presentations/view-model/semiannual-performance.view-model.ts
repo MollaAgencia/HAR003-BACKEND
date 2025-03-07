@@ -1,13 +1,17 @@
-// import { SemiannualPerformanceDetails } from '@root/domain/performance/enterprise/value-objects/semiannual-performance-details'
+import { SemiannualPerformanceDetails } from '@root/domain/performance/enterprise/value-objects/semiannual-performance-details'
 
-// import { PerformanceViewModel } from './performance.view-model'
-
-// export class SemiannualPerformanceViewModel {
-//   static toHttp(semiannualPerformance: SemiannualPerformanceDetails) {
-//     return {
-//       performances: semiannualPerformance.performances.map(PerformanceViewModel.toHttp),
-//       score: semiannualPerformance.totalScore,
-//       status: semiannualPerformance.status,
-//     }
-//   }
-// }
+export class SemiannualPerformanceViewModel {
+  static toHttp(performance: SemiannualPerformanceDetails) {
+    return {
+      bimonthlySellOutPerformances: performance.bimonthlySellOutPerformances.map((bimonthly) => ({
+        goal: bimonthly.goal,
+        real: bimonthly.real,
+        period: bimonthly.period,
+      })),
+      teamEngagement: performance.teamEngagement.map((engagement) => ({
+        achievement: engagement.achievement,
+        period: engagement.period,
+      })),
+    }
+  }
+}

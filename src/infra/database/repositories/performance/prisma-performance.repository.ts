@@ -4,6 +4,7 @@ import { SalesChannel, UserRole } from '@root/domain/authorization/enterprise/in
 import {
   GetPerformanceProps,
   GetSemiannuallyPerformanceProps,
+  GetTeamPerformanceProps,
   PerformanceRepository,
 } from '@root/domain/performance/applications/repositories/performance.repositories'
 import { KpiType, kpiType } from '@root/domain/performance/enterprise/entities/performance.entity'
@@ -163,20 +164,20 @@ export class PrismaPerformanceRepository implements PerformanceRepository {
     })
   }
 
-  async getTeamEngagement(data: GetPerformanceProps): Promise<Array<TeamEngagementDetails>> {
+  async getTeamEngagement(data: GetTeamPerformanceProps): Promise<Array<TeamEngagementDetails>> {
     const { userId, period } = data
 
     const users = await this.db.performance.groupBy({
       by: ['userId'],
       where: {
-        period: period,
+        period: { in: period },
         OR: [{ supervisorId: userId.toValue() }, { managerId: userId.toValue() }],
       },
     })
     const results = await Promise.all(
       users.map(async (user) => {
         const userPerformances = await this.db.performance.findMany({
-          where: { userId: user.userId, period: period },
+          where: { userId: user.userId, period: { in: period } },
           include: {
             user: true,
           },
@@ -184,14 +185,14 @@ export class PrismaPerformanceRepository implements PerformanceRepository {
 
         const teamSizeSupervisor = await this.db.performance.count({
           where: {
-            period: period,
+            period: { in: period },
             supervisorId: user.userId,
           },
         })
 
         const teamSizeManager = await this.db.performance.count({
           where: {
-            period: period,
+            period: { in: period },
             managerId: user.userId,
           },
         })
