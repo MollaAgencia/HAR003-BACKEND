@@ -2,7 +2,7 @@ import { ApiProperty, ApiResponse, PickType } from '@nestjs/swagger'
 import { UserDto } from '@root/presentations/swagger/entities/user.dto'
 import { IsString } from 'class-validator'
 
-export class RegisterUserBodySwaggerDto extends PickType(UserDto, ['email', 'document', 'telephone']) {
+export class RegisterUserBodySwaggerDto extends PickType(UserDto, ['email', 'telephone']) {
   @ApiProperty({
     description: 'User password',
     example: 'password123',

@@ -37,7 +37,7 @@ export class OnSendEmailFromTokensSubscriber implements EventHandler {
 
         await this.sendMail.execute({
           userId: user.value.id,
-          email: 'hiago.maciel@agenciamolla.com.br',
+          email: user.value.email,
           type: MailType.VERIFY_EMAIL,
           subject: 'Verificação de e-mail',
           body: verifyEmailTemplate({ url: redirect.toString(), name: user.value.name }),
@@ -50,7 +50,7 @@ export class OnSendEmailFromTokensSubscriber implements EventHandler {
 
         await this.sendMail.execute({
           userId: user.value.id,
-          email: 'hiago.maciel@agenciamolla.com.br',
+          email: user.value.email,
           type: MailType.FORGOT_PASSWORD,
           subject: 'Recuperação de senha',
           body: forgotPasswordTemplate({ url: redirect.toString(), name: user.value.name }),
