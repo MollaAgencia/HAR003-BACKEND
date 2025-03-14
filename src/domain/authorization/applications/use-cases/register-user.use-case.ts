@@ -15,7 +15,6 @@ import { UsersRepository } from '../repositories/users.repository'
 type InputProps = {
   email: string
   password: string
-  document: string
   telephone: string
 }
 
@@ -33,18 +32,14 @@ export class RegisterUserUseCase {
   ) {}
 
   async execute(data: InputProps): Promise<OutputProps> {
-    const { email, password, document, telephone } = data
+    const { email, password, telephone } = data
 
     const user = await this.usersRepository.findByEmail(email)
     if (!user) return left(new ResourceNotFoundError())
 
-    const cpfAlreadyInUse = await this.usersRepository.findByDocument(document)
-    if (cpfAlreadyInUse) return left(new ResourceAlreadyExistsError())
-
     if (user.disabled) return left(new InactiveResourceError())
 
     user.password = await this.hashGenerator.hash(password)
-    user.document = document
     user.telephone = telephone
 
     await this.usersRepository.save(user)
