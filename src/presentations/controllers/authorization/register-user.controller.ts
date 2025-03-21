@@ -32,12 +32,13 @@ export class RegisterUserController {
   @HttpCode(201)
   @RegisterUserSwaggerDto()
   async handle(@Body() body: RegisterUserBodySwaggerDto) {
-    const { email, password, telephone } = body
+    const { email, password, telephone, document } = body
 
     const result = await this.registerUser.execute({
       email,
       password,
       telephone,
+      document,
     })
 
     if (result.isLeft()) {
