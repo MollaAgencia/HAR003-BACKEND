@@ -1,7 +1,7 @@
 import { ApiProperty, ApiResponse, PickType } from '@nestjs/swagger'
 import { UserDto } from '@root/presentations/swagger/entities/user.dto'
 
-class MeResponseDto extends PickType(UserDto, ['name', 'email', 'telephone', 'role']) {}
+class MeResponseDto extends PickType(UserDto, ['name', 'email', 'telephone', 'role', 'document']) {}
 
 export const MeSwaggerDto = () => {
   return function (target: any, key: any, descriptor: any) {

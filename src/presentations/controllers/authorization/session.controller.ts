@@ -21,7 +21,6 @@ export class SessionController {
   @SessionSwaggerDto()
   async handle(@Body() body: SessionBodySwaggerDto) {
     const { email, password } = body
-    console.log(body)
     const result = await this.authorization.execute({
       email,
       password,

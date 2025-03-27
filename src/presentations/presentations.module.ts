@@ -22,6 +22,7 @@ import { SendVerificationEmailTokenController } from './controllers/authorizatio
 import { SessionController } from './controllers/authorization/session.controller'
 import { SwitchChoseUserController } from './controllers/authorization/switch-chose-user.controller'
 import { ToggleUserStatusController } from './controllers/authorization/toggle-user-status.controller'
+import { UpdateDocumentController } from './controllers/authorization/update-document.controller'
 import { UpdateUserController } from './controllers/authorization/update-user.controller'
 import { VerifyEmailController } from './controllers/authorization/verify-email.controller'
 import { FindAccumulatedAwardController } from './controllers/award/find-accumulated-award.controller'
@@ -74,6 +75,7 @@ import { SacController } from './controllers/sac.controller'
     SemiannualPerformanceController,
     FindCurrentRankingManagerController,
     FindRankingsManagerController,
+    UpdateDocumentController,
   ],
 })
 export class PresentationsModule {}

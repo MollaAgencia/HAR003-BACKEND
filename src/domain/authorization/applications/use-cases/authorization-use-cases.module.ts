@@ -15,9 +15,10 @@ import { NewPasswordUseCase } from './new-password.use-case'
 import { RegisterUserUseCase } from './register-user.use-case'
 import { SendVerificationEmailTokenUseCase } from './send-verification-email-token.use-case'
 import { SwitchEmbedUserUseCase } from './switch-embed-user.use-case'
+import { ToggleUserStatusUseCase } from './toggle-user-status.use-case'
+import { UpdateDocumentUseCase } from './update-document.use-case'
 import { UpdateUserUseCase } from './update-user.use-case'
 import { VerifyEmailUseCase } from './verify-email.use-case'
-import { ToggleUserStatusUseCase } from './toggle-user-status.use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, EnvModule],
@@ -36,6 +37,7 @@ import { ToggleUserStatusUseCase } from './toggle-user-status.use-case'
     CreateUserUseCase,
     FindUsersForManagementUseCase,
     ToggleUserStatusUseCase,
+    UpdateDocumentUseCase,
   ],
   exports: [
     AuthorizationUseCase,
@@ -52,6 +54,7 @@ import { ToggleUserStatusUseCase } from './toggle-user-status.use-case'
     CreateUserUseCase,
     FindUsersForManagementUseCase,
     ToggleUserStatusUseCase,
+    UpdateDocumentUseCase,
   ],
 })
 export class AuthorizationUseCasesModule {}
