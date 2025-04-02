@@ -11,9 +11,8 @@ export class SendGridRepository implements MailerRepository {
   constructor(private readonly sendGridClient: SendGridClient) {}
 
   async sendMail(mailer: Mail): Promise<void> {
-    console.log('sendMail')
     await this.sendGridClient.send({
-      from: 'contato-haribogames@agenciamolla.com.br',
+      from: 'contato@haribogames.haribo.com',
       to: mailer.email,
       subject: mailer.subject,
       html: mailer.body,

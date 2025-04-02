@@ -22,7 +22,7 @@ export class SacController {
     const { email, message, name, telephone, subject } = body
 
     const result = await this.sendEmail.execute({
-      email: 'contato@teste.com.br',
+      email: 'contato-haribogames@agenciamolla.com.br',
       body: SacTemplate({ email, message, name, telephone, subject }),
       type: MailType.SAC,
       subject: 'Contato - SAC',
